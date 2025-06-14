@@ -67,7 +67,7 @@ h1 {
 }
 
 .flashcard-container {
-    perspective: 1000px;
+    perspective: 1000px; /* Establishes 3D context for children */
     width: 100%;
     height: 500px; /* Fixed height for consistency */
     margin: 20px auto;
@@ -79,8 +79,8 @@ h1 {
 .flashcard {
     width: 100%;
     height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
+    position: relative; /* Crucial for absolute positioning of front/back */
+    transform-style: preserve-3d; /* Enables 3D space for children */
     transition: transform 0.6s;
     cursor: pointer;
     border-radius: 10px;
@@ -91,11 +91,13 @@ h1 {
     transform: rotateY(180deg);
 }
 
-.flashcard-inner {
+/* Common styles for both front and back faces */
+.flashcard-front,
+.flashcard-back {
+    position: absolute; /* Position them on top of each other */
     width: 100%;
     height: 100%;
-    position: absolute;
-    backface-visibility: hidden;
+    backface-visibility: hidden; /* Hide the back of each face when it's turned away */
     border-radius: 10px;
     overflow-y: auto; /* Enable scrolling for content */
     padding: 25px;
@@ -109,21 +111,20 @@ h1 {
 .flashcard-front {
     background-color: #e0f7fa;
     color: #007bff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     font-size: 1.8em;
     font-weight: bold;
     text-align: center;
     border: 2px solid #007bff;
+    z-index: 2; /* Ensure front is on top initially */
 }
 
 .flashcard-back {
     background-color: #f0f8ff;
     color: #333;
-    transform: rotateY(180deg);
+    transform: rotateY(180deg); /* Initially rotate the back face to be hidden */
     text-align: left;
     border: 2px solid #007bff;
+    z-index: 1; /* Back is behind front initially */
 }
 
 .flashcard-back h3 {
@@ -187,22 +188,26 @@ h1 {
     background-color: #e0a800;
 }
 
-/* Scrollbar styling for flashcard-inner */
-.flashcard-inner::-webkit-scrollbar {
+/* Scrollbar styling for flashcard-inner (now applies to front/back) */
+.flashcard-front::-webkit-scrollbar,
+.flashcard-back::-webkit-scrollbar {
     width: 8px;
 }
 
-.flashcard-inner::-webkit-scrollbar-track {
+.flashcard-front::-webkit-scrollbar-track,
+.flashcard-back::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-radius: 10px;
 }
 
-.flashcard-inner::-webkit-scrollbar-thumb {
+.flashcard-front::-webkit-scrollbar-thumb,
+.flashcard-back::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 10px;
 }
 
-.flashcard-inner::-webkit-scrollbar-thumb:hover {
+.flashcard-front::-webkit-scrollbar-thumb:hover,
+.flashcard-back::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
 
